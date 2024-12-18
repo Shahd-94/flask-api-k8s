@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitHub Repo Creator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .container {
+      max-width: 400px;
+      margin: auto;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 16px;
+    }
+    button {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    .message {
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    .success {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>GitHub Repo Creator</h1>
+    <input type="text" id="repoName" placeholder="Enter repository name" />
+    <button onclick="createRepo()">Create Repository</button>
+    <div id="message" class="message" style="display: none;"></div>
+  </div>
+
+  <script>
+    async function createRepo() {
+    const repoName = document.getElementById('repoName').value;
+    const messageDiv = document.getElementById('message');
+    messageDiv.style.display = 'none';
+
+    if (!repoName) {
+        showMessage('Please enter a repository name.', 'error');
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://localhost:5000/create/${repoName}`); // Updated to include backend URL
+        const result = await response.json();
+
+        if (response.ok) {
+        showMessage(result.message, 'success');
+        } else {
+        showMessage(result.error, 'error');
+        }
+    } catch (err) {
+        showMessage('Failed to connect to the server.', 'error');
+    }
+    }
+
+
+    function showMessage(message, type) {
+      const messageDiv = document.getElementById('message');
+      messageDiv.textContent = message;
+      messageDiv.className = `message ${type}`;
+      messageDiv.style.display = 'block';
+    }
+  </script>
+</body>
+</html>

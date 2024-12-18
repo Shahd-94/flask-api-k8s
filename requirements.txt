@@ -1,0 +1,10 @@
+Flask==1.1.2
+Jinja2==2.11.2
+Flask-RESTful==0.3.8
+MarkupSafe==1.1.1
+itsdangerous==1.1.0
+Werkzeug==1.0.1
+PyGithub
+python-dotenv
+flask-cors
+prometheus_client

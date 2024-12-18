@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: github-management-deployment
+  labels:
+    app: github-management
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: github-management
+  template:
+    metadata:
+      labels:
+        app: github-management
+    spec:
+      containers:
+      - name: github-management-container
+        image: shahd94/github-management:1.2
+        ports:
+        - containerPort: 5000
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: github-management-ui-deployment
+  labels:
+    app: github-management-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: github-management-ui
+  template:
+    metadata:
+      labels:
+        app: github-management-ui
+    spec:
+      containers:
+      - name: github-management-ui-container
+        image: shahd94/github-management:front-1.0
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: github-management-service
+spec:
+  type: NodePort
+  selector:
+    app: github-management
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+      nodePort: 30100
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: github-management-ui-service
+spec:
+  type: NodePort
+  selector:
+    app: github-management-ui
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30200

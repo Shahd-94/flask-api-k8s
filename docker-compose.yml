@@ -1,0 +1,19 @@
+version: '3'
+services:
+  flask-app:
+    build: .
+    ports:
+      - 5000:5000
+    volumes:
+      - .:/app
+  frontend:
+    build:
+      context: .
+      dockerfile: dockerfile-front
+    ports:
+      - "8080:80"
+    depends_on:
+      - flask-app
+
+
+      
